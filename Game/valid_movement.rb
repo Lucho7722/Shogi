@@ -10,6 +10,7 @@ def valid_movement xi, yi, xf, yf, tp, turn, board
     yd = "P" if yd > 1
     yd = "N" if yd < -1
   end
+  valid = true if list["gold_general"].include?([xd,yd]) && board[xi][yi].prom
   valid = true if list[tp.to_s].include?([xd,yd])
   return valid unless valid
   if tp == "king"
