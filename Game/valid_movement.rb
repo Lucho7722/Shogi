@@ -2,7 +2,15 @@ require '../Game/movement_rules'
 def valid_movement xi, yi, xf, yf, tp, turn, board
   list = movs
   valid = false
-  valid = true if list[tp.to_s].include?([xf-xi,yf-yi])
+  xd = xf-xi
+  yd = yf-yi
+  unless tp == "hourse"
+    xd = "P" if xd > 1
+    xd = "N" if xd < -1
+    yd = "P" if yd > 1
+    yd = "N" if yd < -1
+  end
+  valid = true if list[tp.to_s].include?([xd,yd])
   return valid unless valid
   if tp == "king"
     unless board[xf][yf+1].nil?
@@ -132,6 +140,83 @@ def valid_movement xi, yi, xf, yf, tp, turn, board
       break
     end
   end
+  a = xi
+  b = yi
+  if xd == "P" && yd == 0
+    a += 1
+    while a < xf
+      valid = false unless board[a][b].nil?
+      a += 1
+    end
+    return valid unless valid
+  end
 
+  if xd == 0 && yd == "P"
+    b += 1
+    while b < yf
+      valid = false unless board[a][b].nil?
+      b += 1
+    end
+    return valid unless valid
+  end
+
+  if xd == "N" && yd == 0
+    a -= 1
+    while a > xf
+      valid = false unless board[a][b].nil?
+      a += 1
+    end
+    return valid unless valid
+  end
+
+  if xd == 0 && yd == "N"
+    b -= 1
+    while b > xf
+      valid = false unless board[a][b].nil?
+      b += 1
+    end
+    return valid unless valid
+  end
+
+  if xd == "P" && yd == "P"
+    a += 1
+    b += 1
+    while a < xf
+      valid = false unless board[a][b].nil?
+      a += 1
+      b += 1
+    end
+    return valid unless valid
+  end
+  if xd == "P" && yd == "N"
+    a += 1
+    b -= 1
+    while a < xf
+      valid = false unless board[a][b].nil?
+      a += 1
+      b -= 1
+    end
+    return valid unless valid
+  end
+  if xd == "N" && yd == "P"
+    a -= 1
+    b += 1
+    while a > xf
+      valid = false unless board[a][b].nil?
+      a -= 1
+      b += 1
+    end
+    return valid unless valid
+  end
+  if xd == "N" && yd == "N"
+    a -= 1
+    b -= 1
+    while a > xf
+      valid = false unless board[a][b].nil?
+      a -= 1
+      b -= 1
+    end
+    return valid unless valid
+  end
   valid
 end
